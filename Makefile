@@ -20,5 +20,6 @@ $(OUTPUT): $(DEPS)
 clean:
 	$(LEIN) clean
 
+.PHONY: protos
 protos:
 	protoc --clojure_out=src --proto_path=protos ${PROTOS}
