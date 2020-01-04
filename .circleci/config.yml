@@ -1,0 +1,27 @@
+version: 2 # use CircleCI 2.0
+jobs:
+  build:
+    working_directory: ~/lib
+    docker:
+      - image: alpine:3.9.2
+    environment:
+      LEIN_ROOT: nbd
+      JVM_OPTS: -Xmx3200m
+    steps:
+      - checkout
+      - run:
+          shell: /bin/sh
+          command: |
+            apk add --no-progress --no-cache \
+               openjdk8 \
+               make \
+               bash \
+               nss
+            ./lein deps
+      - run: make all
+      - run: |
+          mkdir tmp
+          mv target/protojure-* tmp
+      - store_artifacts:
+          path: tmp/
+          destination: jar
