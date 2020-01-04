@@ -468,7 +468,7 @@
 ;-----------------------------------------------------------------------------
 ; ListValue
 ;-----------------------------------------------------------------------------
-(defrecord ListValue-protojure-type [values]
+(defrecord ListValue-type [values]
   pb/Writer
 
   (serialize [this os]
@@ -487,7 +487,7 @@
 
                [index (serdes.core/cis->undefined tag is)]))
          is)
-        (map->ListValue-protojure-type)))
+        (map->ListValue-type)))
 
 (defn ecis->ListValue
   "Embedded CodedInputStream to ListValue"
@@ -502,7 +502,7 @@
   {:pre [(if (s/valid? ::ListValue-spec init) true (throw (ex-info "Invalid input" (s/explain-data ::ListValue-spec init))))]}
   (-> (merge ListValue-defaults init)
       (cond-> (contains? init :values) (update :values #(map new-Value %)))
-      (map->ListValue-protojure-type)))
+      (map->ListValue-type)))
 
 (defn pb->ListValue
   "Protobuf to ListValue"
@@ -512,7 +512,7 @@
 ;-----------------------------------------------------------------------------
 ; Empty
 ;-----------------------------------------------------------------------------
-(defrecord Empty-protojure-type []
+(defrecord Empty-type []
   pb/Writer
 
   (serialize [this os]
@@ -529,7 +529,7 @@
              (case index
                [index (serdes.core/cis->undefined tag is)]))
          is)
-        (map->Empty-protojure-type)))
+        (map->Empty-type)))
 
 (defn ecis->Empty
   "Embedded CodedInputStream to Empty"
@@ -543,7 +543,7 @@
   [init]
   {:pre [(if (s/valid? ::Empty-spec init) true (throw (ex-info "Invalid input" (s/explain-data ::Empty-spec init))))]}
   (-> (merge Empty-defaults init)
-      (map->Empty-protojure-type)))
+      (map->Empty-type)))
 
 (defn pb->Empty
   "Protobuf to Empty"
@@ -553,7 +553,7 @@
 ;-----------------------------------------------------------------------------
 ; Struct
 ;-----------------------------------------------------------------------------
-(defrecord Struct-protojure-type [fields]
+(defrecord Struct-type [fields]
   pb/Writer
 
   (serialize [this os]
@@ -572,7 +572,7 @@
 
                [index (serdes.core/cis->undefined tag is)]))
          is)
-        (map->Struct-protojure-type)))
+        (map->Struct-type)))
 
 (defn ecis->Struct
   "Embedded CodedInputStream to Struct"
@@ -586,7 +586,7 @@
   [init]
   {:pre [(if (s/valid? ::Struct-spec init) true (throw (ex-info "Invalid input" (s/explain-data ::Struct-spec init))))]}
   (-> (merge Struct-defaults init)
-      (map->Struct-protojure-type)))
+      (map->Struct-type)))
 
 (defn pb->Struct
   "Protobuf to Struct"
@@ -596,7 +596,7 @@
 ;-----------------------------------------------------------------------------
 ; Api
 ;-----------------------------------------------------------------------------
-(defrecord Api-protojure-type [name methods options version source-context mixins syntax]
+(defrecord Api-type [name methods options version source-context mixins syntax]
   pb/Writer
 
   (serialize [this os]
@@ -634,7 +634,7 @@
 
                [index (serdes.core/cis->undefined tag is)]))
          is)
-        (map->Api-protojure-type)))
+        (map->Api-type)))
 
 (defn ecis->Api
   "Embedded CodedInputStream to Api"
@@ -652,7 +652,7 @@
       (cond-> (contains? init :options) (update :options #(map new-Option %)))
       (cond-> (contains? init :source-context) (update :source-context new-SourceContext))
       (cond-> (contains? init :mixins) (update :mixins #(map new-Mixin %)))
-      (map->Api-protojure-type)))
+      (map->Api-type)))
 
 (defn pb->Api
   "Protobuf to Api"
@@ -662,7 +662,7 @@
 ;-----------------------------------------------------------------------------
 ; ServiceDescriptorProto
 ;-----------------------------------------------------------------------------
-(defrecord ServiceDescriptorProto-protojure-type [name method options]
+(defrecord ServiceDescriptorProto-type [name method options]
   pb/Writer
 
   (serialize [this os]
@@ -688,7 +688,7 @@
 
                [index (serdes.core/cis->undefined tag is)]))
          is)
-        (map->ServiceDescriptorProto-protojure-type)))
+        (map->ServiceDescriptorProto-type)))
 
 (defn ecis->ServiceDescriptorProto
   "Embedded CodedInputStream to ServiceDescriptorProto"
@@ -704,7 +704,7 @@
   (-> (merge ServiceDescriptorProto-defaults init)
       (cond-> (contains? init :method) (update :method #(map new-MethodDescriptorProto %)))
       (cond-> (contains? init :options) (update :options new-ServiceOptions))
-      (map->ServiceDescriptorProto-protojure-type)))
+      (map->ServiceDescriptorProto-type)))
 
 (defn pb->ServiceDescriptorProto
   "Protobuf to ServiceDescriptorProto"
@@ -714,7 +714,7 @@
 ;-----------------------------------------------------------------------------
 ; Mixin
 ;-----------------------------------------------------------------------------
-(defrecord Mixin-protojure-type [name root]
+(defrecord Mixin-type [name root]
   pb/Writer
 
   (serialize [this os]
@@ -737,7 +737,7 @@
 
                [index (serdes.core/cis->undefined tag is)]))
          is)
-        (map->Mixin-protojure-type)))
+        (map->Mixin-type)))
 
 (defn ecis->Mixin
   "Embedded CodedInputStream to Mixin"
@@ -751,7 +751,7 @@
   [init]
   {:pre [(if (s/valid? ::Mixin-spec init) true (throw (ex-info "Invalid input" (s/explain-data ::Mixin-spec init))))]}
   (-> (merge Mixin-defaults init)
-      (map->Mixin-protojure-type)))
+      (map->Mixin-type)))
 
 (defn pb->Mixin
   "Protobuf to Mixin"
@@ -761,7 +761,7 @@
 ;-----------------------------------------------------------------------------
 ; FloatValue
 ;-----------------------------------------------------------------------------
-(defrecord FloatValue-protojure-type [value]
+(defrecord FloatValue-type [value]
   pb/Writer
 
   (serialize [this os]
@@ -781,7 +781,7 @@
 
                [index (serdes.core/cis->undefined tag is)]))
          is)
-        (map->FloatValue-protojure-type)))
+        (map->FloatValue-type)))
 
 (defn ecis->FloatValue
   "Embedded CodedInputStream to FloatValue"
@@ -795,7 +795,7 @@
   [init]
   {:pre [(if (s/valid? ::FloatValue-spec init) true (throw (ex-info "Invalid input" (s/explain-data ::FloatValue-spec init))))]}
   (-> (merge FloatValue-defaults init)
-      (map->FloatValue-protojure-type)))
+      (map->FloatValue-type)))
 
 (defn pb->FloatValue
   "Protobuf to FloatValue"
@@ -805,7 +805,7 @@
 ;-----------------------------------------------------------------------------
 ; BoolValue
 ;-----------------------------------------------------------------------------
-(defrecord BoolValue-protojure-type [value]
+(defrecord BoolValue-type [value]
   pb/Writer
 
   (serialize [this os]
@@ -825,7 +825,7 @@
 
                [index (serdes.core/cis->undefined tag is)]))
          is)
-        (map->BoolValue-protojure-type)))
+        (map->BoolValue-type)))
 
 (defn ecis->BoolValue
   "Embedded CodedInputStream to BoolValue"
@@ -839,7 +839,7 @@
   [init]
   {:pre [(if (s/valid? ::BoolValue-spec init) true (throw (ex-info "Invalid input" (s/explain-data ::BoolValue-spec init))))]}
   (-> (merge BoolValue-defaults init)
-      (map->BoolValue-protojure-type)))
+      (map->BoolValue-type)))
 
 (defn pb->BoolValue
   "Protobuf to BoolValue"
@@ -849,7 +849,7 @@
 ;-----------------------------------------------------------------------------
 ; DescriptorProto-ExtensionRange
 ;-----------------------------------------------------------------------------
-(defrecord DescriptorProto-ExtensionRange-protojure-type [start end options]
+(defrecord DescriptorProto-ExtensionRange-type [start end options]
   pb/Writer
 
   (serialize [this os]
@@ -875,7 +875,7 @@
 
                [index (serdes.core/cis->undefined tag is)]))
          is)
-        (map->DescriptorProto-ExtensionRange-protojure-type)))
+        (map->DescriptorProto-ExtensionRange-type)))
 
 (defn ecis->DescriptorProto-ExtensionRange
   "Embedded CodedInputStream to DescriptorProto-ExtensionRange"
@@ -890,7 +890,7 @@
   {:pre [(if (s/valid? ::DescriptorProto-ExtensionRange-spec init) true (throw (ex-info "Invalid input" (s/explain-data ::DescriptorProto-ExtensionRange-spec init))))]}
   (-> (merge DescriptorProto-ExtensionRange-defaults init)
       (cond-> (contains? init :options) (update :options new-ExtensionRangeOptions))
-      (map->DescriptorProto-ExtensionRange-protojure-type)))
+      (map->DescriptorProto-ExtensionRange-type)))
 
 (defn pb->DescriptorProto-ExtensionRange
   "Protobuf to DescriptorProto-ExtensionRange"
@@ -900,7 +900,7 @@
 ;-----------------------------------------------------------------------------
 ; Type
 ;-----------------------------------------------------------------------------
-(defrecord Type-protojure-type [name fields oneofs options source-context syntax]
+(defrecord Type-type [name fields oneofs options source-context syntax]
   pb/Writer
 
   (serialize [this os]
@@ -935,7 +935,7 @@
 
                [index (serdes.core/cis->undefined tag is)]))
          is)
-        (map->Type-protojure-type)))
+        (map->Type-type)))
 
 (defn ecis->Type
   "Embedded CodedInputStream to Type"
@@ -952,7 +952,7 @@
       (cond-> (contains? init :fields) (update :fields #(map new-Field %)))
       (cond-> (contains? init :options) (update :options #(map new-Option %)))
       (cond-> (contains? init :source-context) (update :source-context new-SourceContext))
-      (map->Type-protojure-type)))
+      (map->Type-type)))
 
 (defn pb->Type
   "Protobuf to Type"
@@ -962,7 +962,7 @@
 ;-----------------------------------------------------------------------------
 ; EnumValue
 ;-----------------------------------------------------------------------------
-(defrecord EnumValue-protojure-type [name number options]
+(defrecord EnumValue-type [name number options]
   pb/Writer
 
   (serialize [this os]
@@ -988,7 +988,7 @@
 
                [index (serdes.core/cis->undefined tag is)]))
          is)
-        (map->EnumValue-protojure-type)))
+        (map->EnumValue-type)))
 
 (defn ecis->EnumValue
   "Embedded CodedInputStream to EnumValue"
@@ -1003,7 +1003,7 @@
   {:pre [(if (s/valid? ::EnumValue-spec init) true (throw (ex-info "Invalid input" (s/explain-data ::EnumValue-spec init))))]}
   (-> (merge EnumValue-defaults init)
       (cond-> (contains? init :options) (update :options #(map new-Option %)))
-      (map->EnumValue-protojure-type)))
+      (map->EnumValue-type)))
 
 (defn pb->EnumValue
   "Protobuf to EnumValue"
@@ -1013,7 +1013,7 @@
 ;-----------------------------------------------------------------------------
 ; Option
 ;-----------------------------------------------------------------------------
-(defrecord Option-protojure-type [name value]
+(defrecord Option-type [name value]
   pb/Writer
 
   (serialize [this os]
@@ -1036,7 +1036,7 @@
 
                [index (serdes.core/cis->undefined tag is)]))
          is)
-        (map->Option-protojure-type)))
+        (map->Option-type)))
 
 (defn ecis->Option
   "Embedded CodedInputStream to Option"
@@ -1051,7 +1051,7 @@
   {:pre [(if (s/valid? ::Option-spec init) true (throw (ex-info "Invalid input" (s/explain-data ::Option-spec init))))]}
   (-> (merge Option-defaults init)
       (cond-> (contains? init :value) (update :value new-Any))
-      (map->Option-protojure-type)))
+      (map->Option-type)))
 
 (defn pb->Option
   "Protobuf to Option"
@@ -1061,7 +1061,7 @@
 ;-----------------------------------------------------------------------------
 ; Struct-FieldsEntry
 ;-----------------------------------------------------------------------------
-(defrecord Struct-FieldsEntry-protojure-type [key value]
+(defrecord Struct-FieldsEntry-type [key value]
   pb/Writer
 
   (serialize [this os]
@@ -1084,7 +1084,7 @@
 
                [index (serdes.core/cis->undefined tag is)]))
          is)
-        (map->Struct-FieldsEntry-protojure-type)))
+        (map->Struct-FieldsEntry-type)))
 
 (defn ecis->Struct-FieldsEntry
   "Embedded CodedInputStream to Struct-FieldsEntry"
@@ -1099,7 +1099,7 @@
   {:pre [(if (s/valid? ::Struct-FieldsEntry-spec init) true (throw (ex-info "Invalid input" (s/explain-data ::Struct-FieldsEntry-spec init))))]}
   (-> (merge Struct-FieldsEntry-defaults init)
       (cond-> (contains? init :value) (update :value new-Value))
-      (map->Struct-FieldsEntry-protojure-type)))
+      (map->Struct-FieldsEntry-type)))
 
 (defn pb->Struct-FieldsEntry
   "Protobuf to Struct-FieldsEntry"
@@ -1109,7 +1109,7 @@
 ;-----------------------------------------------------------------------------
 ; UninterpretedOption-NamePart
 ;-----------------------------------------------------------------------------
-(defrecord UninterpretedOption-NamePart-protojure-type [name-part is-extension]
+(defrecord UninterpretedOption-NamePart-type [name-part is-extension]
   pb/Writer
 
   (serialize [this os]
@@ -1132,7 +1132,7 @@
 
                [index (serdes.core/cis->undefined tag is)]))
          is)
-        (map->UninterpretedOption-NamePart-protojure-type)))
+        (map->UninterpretedOption-NamePart-type)))
 
 (defn ecis->UninterpretedOption-NamePart
   "Embedded CodedInputStream to UninterpretedOption-NamePart"
@@ -1146,7 +1146,7 @@
   [init]
   {:pre [(if (s/valid? ::UninterpretedOption-NamePart-spec init) true (throw (ex-info "Invalid input" (s/explain-data ::UninterpretedOption-NamePart-spec init))))]}
   (-> (merge UninterpretedOption-NamePart-defaults init)
-      (map->UninterpretedOption-NamePart-protojure-type)))
+      (map->UninterpretedOption-NamePart-type)))
 
 (defn pb->UninterpretedOption-NamePart
   "Protobuf to UninterpretedOption-NamePart"
@@ -1156,7 +1156,7 @@
 ;-----------------------------------------------------------------------------
 ; FileDescriptorSet
 ;-----------------------------------------------------------------------------
-(defrecord FileDescriptorSet-protojure-type [file]
+(defrecord FileDescriptorSet-type [file]
   pb/Writer
 
   (serialize [this os]
@@ -1175,7 +1175,7 @@
 
                [index (serdes.core/cis->undefined tag is)]))
          is)
-        (map->FileDescriptorSet-protojure-type)))
+        (map->FileDescriptorSet-type)))
 
 (defn ecis->FileDescriptorSet
   "Embedded CodedInputStream to FileDescriptorSet"
@@ -1190,7 +1190,7 @@
   {:pre [(if (s/valid? ::FileDescriptorSet-spec init) true (throw (ex-info "Invalid input" (s/explain-data ::FileDescriptorSet-spec init))))]}
   (-> (merge FileDescriptorSet-defaults init)
       (cond-> (contains? init :file) (update :file #(map new-FileDescriptorProto %)))
-      (map->FileDescriptorSet-protojure-type)))
+      (map->FileDescriptorSet-type)))
 
 (defn pb->FileDescriptorSet
   "Protobuf to FileDescriptorSet"
@@ -1200,7 +1200,7 @@
 ;-----------------------------------------------------------------------------
 ; GeneratedCodeInfo-Annotation
 ;-----------------------------------------------------------------------------
-(defrecord GeneratedCodeInfo-Annotation-protojure-type [path source-file begin end]
+(defrecord GeneratedCodeInfo-Annotation-type [path source-file begin end]
   pb/Writer
 
   (serialize [this os]
@@ -1229,7 +1229,7 @@
 
                [index (serdes.core/cis->undefined tag is)]))
          is)
-        (map->GeneratedCodeInfo-Annotation-protojure-type)))
+        (map->GeneratedCodeInfo-Annotation-type)))
 
 (defn ecis->GeneratedCodeInfo-Annotation
   "Embedded CodedInputStream to GeneratedCodeInfo-Annotation"
@@ -1243,7 +1243,7 @@
   [init]
   {:pre [(if (s/valid? ::GeneratedCodeInfo-Annotation-spec init) true (throw (ex-info "Invalid input" (s/explain-data ::GeneratedCodeInfo-Annotation-spec init))))]}
   (-> (merge GeneratedCodeInfo-Annotation-defaults init)
-      (map->GeneratedCodeInfo-Annotation-protojure-type)))
+      (map->GeneratedCodeInfo-Annotation-type)))
 
 (defn pb->GeneratedCodeInfo-Annotation
   "Protobuf to GeneratedCodeInfo-Annotation"
@@ -1253,7 +1253,7 @@
 ;-----------------------------------------------------------------------------
 ; MethodOptions
 ;-----------------------------------------------------------------------------
-(defrecord MethodOptions-protojure-type [deprecated idempotency-level uninterpreted-option]
+(defrecord MethodOptions-type [deprecated idempotency-level uninterpreted-option]
   pb/Writer
 
   (serialize [this os]
@@ -1279,7 +1279,7 @@
 
                [index (serdes.core/cis->undefined tag is)]))
          is)
-        (map->MethodOptions-protojure-type)))
+        (map->MethodOptions-type)))
 
 (defn ecis->MethodOptions
   "Embedded CodedInputStream to MethodOptions"
@@ -1294,7 +1294,7 @@
   {:pre [(if (s/valid? ::MethodOptions-spec init) true (throw (ex-info "Invalid input" (s/explain-data ::MethodOptions-spec init))))]}
   (-> (merge MethodOptions-defaults init)
       (cond-> (contains? init :uninterpreted-option) (update :uninterpreted-option #(map new-UninterpretedOption %)))
-      (map->MethodOptions-protojure-type)))
+      (map->MethodOptions-type)))
 
 (defn pb->MethodOptions
   "Protobuf to MethodOptions"
@@ -1304,7 +1304,7 @@
 ;-----------------------------------------------------------------------------
 ; EnumDescriptorProto-EnumReservedRange
 ;-----------------------------------------------------------------------------
-(defrecord EnumDescriptorProto-EnumReservedRange-protojure-type [start end]
+(defrecord EnumDescriptorProto-EnumReservedRange-type [start end]
   pb/Writer
 
   (serialize [this os]
@@ -1327,7 +1327,7 @@
 
                [index (serdes.core/cis->undefined tag is)]))
          is)
-        (map->EnumDescriptorProto-EnumReservedRange-protojure-type)))
+        (map->EnumDescriptorProto-EnumReservedRange-type)))
 
 (defn ecis->EnumDescriptorProto-EnumReservedRange
   "Embedded CodedInputStream to EnumDescriptorProto-EnumReservedRange"
@@ -1341,7 +1341,7 @@
   [init]
   {:pre [(if (s/valid? ::EnumDescriptorProto-EnumReservedRange-spec init) true (throw (ex-info "Invalid input" (s/explain-data ::EnumDescriptorProto-EnumReservedRange-spec init))))]}
   (-> (merge EnumDescriptorProto-EnumReservedRange-defaults init)
-      (map->EnumDescriptorProto-EnumReservedRange-protojure-type)))
+      (map->EnumDescriptorProto-EnumReservedRange-type)))
 
 (defn pb->EnumDescriptorProto-EnumReservedRange
   "Protobuf to EnumDescriptorProto-EnumReservedRange"
@@ -1351,7 +1351,7 @@
 ;-----------------------------------------------------------------------------
 ; EnumValueDescriptorProto
 ;-----------------------------------------------------------------------------
-(defrecord EnumValueDescriptorProto-protojure-type [name number options]
+(defrecord EnumValueDescriptorProto-type [name number options]
   pb/Writer
 
   (serialize [this os]
@@ -1377,7 +1377,7 @@
 
                [index (serdes.core/cis->undefined tag is)]))
          is)
-        (map->EnumValueDescriptorProto-protojure-type)))
+        (map->EnumValueDescriptorProto-type)))
 
 (defn ecis->EnumValueDescriptorProto
   "Embedded CodedInputStream to EnumValueDescriptorProto"
@@ -1392,7 +1392,7 @@
   {:pre [(if (s/valid? ::EnumValueDescriptorProto-spec init) true (throw (ex-info "Invalid input" (s/explain-data ::EnumValueDescriptorProto-spec init))))]}
   (-> (merge EnumValueDescriptorProto-defaults init)
       (cond-> (contains? init :options) (update :options new-EnumValueOptions))
-      (map->EnumValueDescriptorProto-protojure-type)))
+      (map->EnumValueDescriptorProto-type)))
 
 (defn pb->EnumValueDescriptorProto
   "Protobuf to EnumValueDescriptorProto"
@@ -1402,7 +1402,7 @@
 ;-----------------------------------------------------------------------------
 ; UInt64Value
 ;-----------------------------------------------------------------------------
-(defrecord UInt64Value-protojure-type [value]
+(defrecord UInt64Value-type [value]
   pb/Writer
 
   (serialize [this os]
@@ -1422,7 +1422,7 @@
 
                [index (serdes.core/cis->undefined tag is)]))
          is)
-        (map->UInt64Value-protojure-type)))
+        (map->UInt64Value-type)))
 
 (defn ecis->UInt64Value
   "Embedded CodedInputStream to UInt64Value"
@@ -1436,7 +1436,7 @@
   [init]
   {:pre [(if (s/valid? ::UInt64Value-spec init) true (throw (ex-info "Invalid input" (s/explain-data ::UInt64Value-spec init))))]}
   (-> (merge UInt64Value-defaults init)
-      (map->UInt64Value-protojure-type)))
+      (map->UInt64Value-type)))
 
 (defn pb->UInt64Value
   "Protobuf to UInt64Value"
@@ -1446,7 +1446,7 @@
 ;-----------------------------------------------------------------------------
 ; SourceCodeInfo-Location
 ;-----------------------------------------------------------------------------
-(defrecord SourceCodeInfo-Location-protojure-type [path span leading-comments trailing-comments leading-detached-comments]
+(defrecord SourceCodeInfo-Location-type [path span leading-comments trailing-comments leading-detached-comments]
   pb/Writer
 
   (serialize [this os]
@@ -1478,7 +1478,7 @@
 
                [index (serdes.core/cis->undefined tag is)]))
          is)
-        (map->SourceCodeInfo-Location-protojure-type)))
+        (map->SourceCodeInfo-Location-type)))
 
 (defn ecis->SourceCodeInfo-Location
   "Embedded CodedInputStream to SourceCodeInfo-Location"
@@ -1492,7 +1492,7 @@
   [init]
   {:pre [(if (s/valid? ::SourceCodeInfo-Location-spec init) true (throw (ex-info "Invalid input" (s/explain-data ::SourceCodeInfo-Location-spec init))))]}
   (-> (merge SourceCodeInfo-Location-defaults init)
-      (map->SourceCodeInfo-Location-protojure-type)))
+      (map->SourceCodeInfo-Location-type)))
 
 (defn pb->SourceCodeInfo-Location
   "Protobuf to SourceCodeInfo-Location"
@@ -1502,7 +1502,7 @@
 ;-----------------------------------------------------------------------------
 ; FieldOptions
 ;-----------------------------------------------------------------------------
-(defrecord FieldOptions-protojure-type [ctype packed jstype lazy deprecated weak uninterpreted-option]
+(defrecord FieldOptions-type [ctype packed jstype lazy deprecated weak uninterpreted-option]
   pb/Writer
 
   (serialize [this os]
@@ -1540,7 +1540,7 @@
 
                [index (serdes.core/cis->undefined tag is)]))
          is)
-        (map->FieldOptions-protojure-type)))
+        (map->FieldOptions-type)))
 
 (defn ecis->FieldOptions
   "Embedded CodedInputStream to FieldOptions"
@@ -1555,7 +1555,7 @@
   {:pre [(if (s/valid? ::FieldOptions-spec init) true (throw (ex-info "Invalid input" (s/explain-data ::FieldOptions-spec init))))]}
   (-> (merge FieldOptions-defaults init)
       (cond-> (contains? init :uninterpreted-option) (update :uninterpreted-option #(map new-UninterpretedOption %)))
-      (map->FieldOptions-protojure-type)))
+      (map->FieldOptions-type)))
 
 (defn pb->FieldOptions
   "Protobuf to FieldOptions"
@@ -1565,7 +1565,7 @@
 ;-----------------------------------------------------------------------------
 ; EnumOptions
 ;-----------------------------------------------------------------------------
-(defrecord EnumOptions-protojure-type [allow-alias deprecated uninterpreted-option]
+(defrecord EnumOptions-type [allow-alias deprecated uninterpreted-option]
   pb/Writer
 
   (serialize [this os]
@@ -1591,7 +1591,7 @@
 
                [index (serdes.core/cis->undefined tag is)]))
          is)
-        (map->EnumOptions-protojure-type)))
+        (map->EnumOptions-type)))
 
 (defn ecis->EnumOptions
   "Embedded CodedInputStream to EnumOptions"
@@ -1606,7 +1606,7 @@
   {:pre [(if (s/valid? ::EnumOptions-spec init) true (throw (ex-info "Invalid input" (s/explain-data ::EnumOptions-spec init))))]}
   (-> (merge EnumOptions-defaults init)
       (cond-> (contains? init :uninterpreted-option) (update :uninterpreted-option #(map new-UninterpretedOption %)))
-      (map->EnumOptions-protojure-type)))
+      (map->EnumOptions-type)))
 
 (defn pb->EnumOptions
   "Protobuf to EnumOptions"
@@ -1616,7 +1616,7 @@
 ;-----------------------------------------------------------------------------
 ; MessageOptions
 ;-----------------------------------------------------------------------------
-(defrecord MessageOptions-protojure-type [message-set-wire-format no-standard-descriptor-accessor deprecated map-entry uninterpreted-option]
+(defrecord MessageOptions-type [message-set-wire-format no-standard-descriptor-accessor deprecated map-entry uninterpreted-option]
   pb/Writer
 
   (serialize [this os]
@@ -1648,7 +1648,7 @@
 
                [index (serdes.core/cis->undefined tag is)]))
          is)
-        (map->MessageOptions-protojure-type)))
+        (map->MessageOptions-type)))
 
 (defn ecis->MessageOptions
   "Embedded CodedInputStream to MessageOptions"
@@ -1663,7 +1663,7 @@
   {:pre [(if (s/valid? ::MessageOptions-spec init) true (throw (ex-info "Invalid input" (s/explain-data ::MessageOptions-spec init))))]}
   (-> (merge MessageOptions-defaults init)
       (cond-> (contains? init :uninterpreted-option) (update :uninterpreted-option #(map new-UninterpretedOption %)))
-      (map->MessageOptions-protojure-type)))
+      (map->MessageOptions-type)))
 
 (defn pb->MessageOptions
   "Protobuf to MessageOptions"
@@ -1673,7 +1673,7 @@
 ;-----------------------------------------------------------------------------
 ; BytesValue
 ;-----------------------------------------------------------------------------
-(defrecord BytesValue-protojure-type [value]
+(defrecord BytesValue-type [value]
   pb/Writer
 
   (serialize [this os]
@@ -1693,7 +1693,7 @@
 
                [index (serdes.core/cis->undefined tag is)]))
          is)
-        (map->BytesValue-protojure-type)))
+        (map->BytesValue-type)))
 
 (defn ecis->BytesValue
   "Embedded CodedInputStream to BytesValue"
@@ -1707,7 +1707,7 @@
   [init]
   {:pre [(if (s/valid? ::BytesValue-spec init) true (throw (ex-info "Invalid input" (s/explain-data ::BytesValue-spec init))))]}
   (-> (merge BytesValue-defaults init)
-      (map->BytesValue-protojure-type)))
+      (map->BytesValue-type)))
 
 (defn pb->BytesValue
   "Protobuf to BytesValue"
@@ -1717,7 +1717,7 @@
 ;-----------------------------------------------------------------------------
 ; Any
 ;-----------------------------------------------------------------------------
-(defrecord Any-protojure-type [type-url value]
+(defrecord Any-type [type-url value]
   pb/Writer
 
   (serialize [this os]
@@ -1740,7 +1740,7 @@
 
                [index (serdes.core/cis->undefined tag is)]))
          is)
-        (map->Any-protojure-type)))
+        (map->Any-type)))
 
 (defn ecis->Any
   "Embedded CodedInputStream to Any"
@@ -1754,7 +1754,7 @@
   [init]
   {:pre [(if (s/valid? ::Any-spec init) true (throw (ex-info "Invalid input" (s/explain-data ::Any-spec init))))]}
   (-> (merge Any-defaults init)
-      (map->Any-protojure-type)))
+      (map->Any-type)))
 
 (defn pb->Any
   "Protobuf to Any"
@@ -1764,7 +1764,7 @@
 ;-----------------------------------------------------------------------------
 ; EnumDescriptorProto
 ;-----------------------------------------------------------------------------
-(defrecord EnumDescriptorProto-protojure-type [name value options reserved-range reserved-name]
+(defrecord EnumDescriptorProto-type [name value options reserved-range reserved-name]
   pb/Writer
 
   (serialize [this os]
@@ -1796,7 +1796,7 @@
 
                [index (serdes.core/cis->undefined tag is)]))
          is)
-        (map->EnumDescriptorProto-protojure-type)))
+        (map->EnumDescriptorProto-type)))
 
 (defn ecis->EnumDescriptorProto
   "Embedded CodedInputStream to EnumDescriptorProto"
@@ -1813,7 +1813,7 @@
       (cond-> (contains? init :value) (update :value #(map new-EnumValueDescriptorProto %)))
       (cond-> (contains? init :options) (update :options new-EnumOptions))
       (cond-> (contains? init :reserved-range) (update :reserved-range #(map new-EnumDescriptorProto-EnumReservedRange %)))
-      (map->EnumDescriptorProto-protojure-type)))
+      (map->EnumDescriptorProto-type)))
 
 (defn pb->EnumDescriptorProto
   "Protobuf to EnumDescriptorProto"
@@ -1823,7 +1823,7 @@
 ;-----------------------------------------------------------------------------
 ; FieldMask
 ;-----------------------------------------------------------------------------
-(defrecord FieldMask-protojure-type [paths]
+(defrecord FieldMask-type [paths]
   pb/Writer
 
   (serialize [this os]
@@ -1843,7 +1843,7 @@
 
                [index (serdes.core/cis->undefined tag is)]))
          is)
-        (map->FieldMask-protojure-type)))
+        (map->FieldMask-type)))
 
 (defn ecis->FieldMask
   "Embedded CodedInputStream to FieldMask"
@@ -1857,7 +1857,7 @@
   [init]
   {:pre [(if (s/valid? ::FieldMask-spec init) true (throw (ex-info "Invalid input" (s/explain-data ::FieldMask-spec init))))]}
   (-> (merge FieldMask-defaults init)
-      (map->FieldMask-protojure-type)))
+      (map->FieldMask-type)))
 
 (defn pb->FieldMask
   "Protobuf to FieldMask"
@@ -1867,7 +1867,7 @@
 ;-----------------------------------------------------------------------------
 ; UninterpretedOption
 ;-----------------------------------------------------------------------------
-(defrecord UninterpretedOption-protojure-type [name identifier-value positive-int-value negative-int-value double-value string-value aggregate-value]
+(defrecord UninterpretedOption-type [name identifier-value positive-int-value negative-int-value double-value string-value aggregate-value]
   pb/Writer
 
   (serialize [this os]
@@ -1904,7 +1904,7 @@
 
                [index (serdes.core/cis->undefined tag is)]))
          is)
-        (map->UninterpretedOption-protojure-type)))
+        (map->UninterpretedOption-type)))
 
 (defn ecis->UninterpretedOption
   "Embedded CodedInputStream to UninterpretedOption"
@@ -1919,7 +1919,7 @@
   {:pre [(if (s/valid? ::UninterpretedOption-spec init) true (throw (ex-info "Invalid input" (s/explain-data ::UninterpretedOption-spec init))))]}
   (-> (merge UninterpretedOption-defaults init)
       (cond-> (contains? init :name) (update :name #(map new-UninterpretedOption-NamePart %)))
-      (map->UninterpretedOption-protojure-type)))
+      (map->UninterpretedOption-type)))
 
 (defn pb->UninterpretedOption
   "Protobuf to UninterpretedOption"
@@ -1929,7 +1929,7 @@
 ;-----------------------------------------------------------------------------
 ; ExtensionRangeOptions
 ;-----------------------------------------------------------------------------
-(defrecord ExtensionRangeOptions-protojure-type [uninterpreted-option]
+(defrecord ExtensionRangeOptions-type [uninterpreted-option]
   pb/Writer
 
   (serialize [this os]
@@ -1948,7 +1948,7 @@
 
                [index (serdes.core/cis->undefined tag is)]))
          is)
-        (map->ExtensionRangeOptions-protojure-type)))
+        (map->ExtensionRangeOptions-type)))
 
 (defn ecis->ExtensionRangeOptions
   "Embedded CodedInputStream to ExtensionRangeOptions"
@@ -1963,7 +1963,7 @@
   {:pre [(if (s/valid? ::ExtensionRangeOptions-spec init) true (throw (ex-info "Invalid input" (s/explain-data ::ExtensionRangeOptions-spec init))))]}
   (-> (merge ExtensionRangeOptions-defaults init)
       (cond-> (contains? init :uninterpreted-option) (update :uninterpreted-option #(map new-UninterpretedOption %)))
-      (map->ExtensionRangeOptions-protojure-type)))
+      (map->ExtensionRangeOptions-type)))
 
 (defn pb->ExtensionRangeOptions
   "Protobuf to ExtensionRangeOptions"
@@ -1973,7 +1973,7 @@
 ;-----------------------------------------------------------------------------
 ; DoubleValue
 ;-----------------------------------------------------------------------------
-(defrecord DoubleValue-protojure-type [value]
+(defrecord DoubleValue-type [value]
   pb/Writer
 
   (serialize [this os]
@@ -1993,7 +1993,7 @@
 
                [index (serdes.core/cis->undefined tag is)]))
          is)
-        (map->DoubleValue-protojure-type)))
+        (map->DoubleValue-type)))
 
 (defn ecis->DoubleValue
   "Embedded CodedInputStream to DoubleValue"
@@ -2007,7 +2007,7 @@
   [init]
   {:pre [(if (s/valid? ::DoubleValue-spec init) true (throw (ex-info "Invalid input" (s/explain-data ::DoubleValue-spec init))))]}
   (-> (merge DoubleValue-defaults init)
-      (map->DoubleValue-protojure-type)))
+      (map->DoubleValue-type)))
 
 (defn pb->DoubleValue
   "Protobuf to DoubleValue"
@@ -2017,7 +2017,7 @@
 ;-----------------------------------------------------------------------------
 ; Value
 ;-----------------------------------------------------------------------------
-(defrecord Value-protojure-type [kind]
+(defrecord Value-type [kind]
   pb/Writer
 
   (serialize [this os]
@@ -2041,7 +2041,7 @@
 
                [index (serdes.core/cis->undefined tag is)]))
          is)
-        (map->Value-protojure-type)))
+        (map->Value-type)))
 
 (defn ecis->Value
   "Embedded CodedInputStream to Value"
@@ -2056,7 +2056,7 @@
   {:pre [(if (s/valid? ::Value-spec init) true (throw (ex-info "Invalid input" (s/explain-data ::Value-spec init))))]}
   (-> (merge Value-defaults init)
       (convert-kind)
-      (map->Value-protojure-type)))
+      (map->Value-type)))
 
 (defn pb->Value
   "Protobuf to Value"
@@ -2066,7 +2066,7 @@
 ;-----------------------------------------------------------------------------
 ; DescriptorProto
 ;-----------------------------------------------------------------------------
-(defrecord DescriptorProto-protojure-type [reserved-range enum-type reserved-name extension-range name extension field options oneof-decl nested-type]
+(defrecord DescriptorProto-type [reserved-range enum-type reserved-name extension-range name extension field options oneof-decl nested-type]
   pb/Writer
 
   (serialize [this os]
@@ -2111,7 +2111,7 @@
 
                [index (serdes.core/cis->undefined tag is)]))
          is)
-        (map->DescriptorProto-protojure-type)))
+        (map->DescriptorProto-type)))
 
 (defn ecis->DescriptorProto
   "Embedded CodedInputStream to DescriptorProto"
@@ -2133,7 +2133,7 @@
       (cond-> (contains? init :oneof-decl) (update :oneof-decl #(map new-OneofDescriptorProto %)))
       (cond-> (contains? init :options) (update :options new-MessageOptions))
       (cond-> (contains? init :reserved-range) (update :reserved-range #(map new-DescriptorProto-ReservedRange %)))
-      (map->DescriptorProto-protojure-type)))
+      (map->DescriptorProto-type)))
 
 (defn pb->DescriptorProto
   "Protobuf to DescriptorProto"
@@ -2143,7 +2143,7 @@
 ;-----------------------------------------------------------------------------
 ; Method
 ;-----------------------------------------------------------------------------
-(defrecord Method-protojure-type [name request-type-url request-streaming response-type-url response-streaming options syntax]
+(defrecord Method-type [name request-type-url request-streaming response-type-url response-streaming options syntax]
   pb/Writer
 
   (serialize [this os]
@@ -2181,7 +2181,7 @@
 
                [index (serdes.core/cis->undefined tag is)]))
          is)
-        (map->Method-protojure-type)))
+        (map->Method-type)))
 
 (defn ecis->Method
   "Embedded CodedInputStream to Method"
@@ -2196,7 +2196,7 @@
   {:pre [(if (s/valid? ::Method-spec init) true (throw (ex-info "Invalid input" (s/explain-data ::Method-spec init))))]}
   (-> (merge Method-defaults init)
       (cond-> (contains? init :options) (update :options #(map new-Option %)))
-      (map->Method-protojure-type)))
+      (map->Method-type)))
 
 (defn pb->Method
   "Protobuf to Method"
@@ -2206,7 +2206,7 @@
 ;-----------------------------------------------------------------------------
 ; OneofOptions
 ;-----------------------------------------------------------------------------
-(defrecord OneofOptions-protojure-type [uninterpreted-option]
+(defrecord OneofOptions-type [uninterpreted-option]
   pb/Writer
 
   (serialize [this os]
@@ -2225,7 +2225,7 @@
 
                [index (serdes.core/cis->undefined tag is)]))
          is)
-        (map->OneofOptions-protojure-type)))
+        (map->OneofOptions-type)))
 
 (defn ecis->OneofOptions
   "Embedded CodedInputStream to OneofOptions"
@@ -2240,7 +2240,7 @@
   {:pre [(if (s/valid? ::OneofOptions-spec init) true (throw (ex-info "Invalid input" (s/explain-data ::OneofOptions-spec init))))]}
   (-> (merge OneofOptions-defaults init)
       (cond-> (contains? init :uninterpreted-option) (update :uninterpreted-option #(map new-UninterpretedOption %)))
-      (map->OneofOptions-protojure-type)))
+      (map->OneofOptions-type)))
 
 (defn pb->OneofOptions
   "Protobuf to OneofOptions"
@@ -2250,7 +2250,7 @@
 ;-----------------------------------------------------------------------------
 ; SourceContext
 ;-----------------------------------------------------------------------------
-(defrecord SourceContext-protojure-type [file-name]
+(defrecord SourceContext-type [file-name]
   pb/Writer
 
   (serialize [this os]
@@ -2270,7 +2270,7 @@
 
                [index (serdes.core/cis->undefined tag is)]))
          is)
-        (map->SourceContext-protojure-type)))
+        (map->SourceContext-type)))
 
 (defn ecis->SourceContext
   "Embedded CodedInputStream to SourceContext"
@@ -2284,7 +2284,7 @@
   [init]
   {:pre [(if (s/valid? ::SourceContext-spec init) true (throw (ex-info "Invalid input" (s/explain-data ::SourceContext-spec init))))]}
   (-> (merge SourceContext-defaults init)
-      (map->SourceContext-protojure-type)))
+      (map->SourceContext-type)))
 
 (defn pb->SourceContext
   "Protobuf to SourceContext"
@@ -2294,7 +2294,7 @@
 ;-----------------------------------------------------------------------------
 ; Duration
 ;-----------------------------------------------------------------------------
-(defrecord Duration-protojure-type [seconds nanos]
+(defrecord Duration-type [seconds nanos]
   pb/Writer
 
   (serialize [this os]
@@ -2317,7 +2317,7 @@
 
                [index (serdes.core/cis->undefined tag is)]))
          is)
-        (map->Duration-protojure-type)))
+        (map->Duration-type)))
 
 (defn ecis->Duration
   "Embedded CodedInputStream to Duration"
@@ -2331,7 +2331,7 @@
   [init]
   {:pre [(if (s/valid? ::Duration-spec init) true (throw (ex-info "Invalid input" (s/explain-data ::Duration-spec init))))]}
   (-> (merge Duration-defaults init)
-      (map->Duration-protojure-type)))
+      (map->Duration-type)))
 
 (defn pb->Duration
   "Protobuf to Duration"
@@ -2341,7 +2341,7 @@
 ;-----------------------------------------------------------------------------
 ; MethodDescriptorProto
 ;-----------------------------------------------------------------------------
-(defrecord MethodDescriptorProto-protojure-type [name input-type output-type options client-streaming server-streaming]
+(defrecord MethodDescriptorProto-type [name input-type output-type options client-streaming server-streaming]
   pb/Writer
 
   (serialize [this os]
@@ -2376,7 +2376,7 @@
 
                [index (serdes.core/cis->undefined tag is)]))
          is)
-        (map->MethodDescriptorProto-protojure-type)))
+        (map->MethodDescriptorProto-type)))
 
 (defn ecis->MethodDescriptorProto
   "Embedded CodedInputStream to MethodDescriptorProto"
@@ -2391,7 +2391,7 @@
   {:pre [(if (s/valid? ::MethodDescriptorProto-spec init) true (throw (ex-info "Invalid input" (s/explain-data ::MethodDescriptorProto-spec init))))]}
   (-> (merge MethodDescriptorProto-defaults init)
       (cond-> (contains? init :options) (update :options new-MethodOptions))
-      (map->MethodDescriptorProto-protojure-type)))
+      (map->MethodDescriptorProto-type)))
 
 (defn pb->MethodDescriptorProto
   "Protobuf to MethodDescriptorProto"
@@ -2401,7 +2401,7 @@
 ;-----------------------------------------------------------------------------
 ; OneofDescriptorProto
 ;-----------------------------------------------------------------------------
-(defrecord OneofDescriptorProto-protojure-type [name options]
+(defrecord OneofDescriptorProto-type [name options]
   pb/Writer
 
   (serialize [this os]
@@ -2424,7 +2424,7 @@
 
                [index (serdes.core/cis->undefined tag is)]))
          is)
-        (map->OneofDescriptorProto-protojure-type)))
+        (map->OneofDescriptorProto-type)))
 
 (defn ecis->OneofDescriptorProto
   "Embedded CodedInputStream to OneofDescriptorProto"
@@ -2439,7 +2439,7 @@
   {:pre [(if (s/valid? ::OneofDescriptorProto-spec init) true (throw (ex-info "Invalid input" (s/explain-data ::OneofDescriptorProto-spec init))))]}
   (-> (merge OneofDescriptorProto-defaults init)
       (cond-> (contains? init :options) (update :options new-OneofOptions))
-      (map->OneofDescriptorProto-protojure-type)))
+      (map->OneofDescriptorProto-type)))
 
 (defn pb->OneofDescriptorProto
   "Protobuf to OneofDescriptorProto"
@@ -2449,7 +2449,7 @@
 ;-----------------------------------------------------------------------------
 ; FileDescriptorProto
 ;-----------------------------------------------------------------------------
-(defrecord FileDescriptorProto-protojure-type [package message-type source-code-info enum-type name extension dependency syntax weak-dependency public-dependency service options]
+(defrecord FileDescriptorProto-type [package message-type source-code-info enum-type name extension dependency syntax weak-dependency public-dependency service options]
   pb/Writer
 
   (serialize [this os]
@@ -2502,7 +2502,7 @@
 
                [index (serdes.core/cis->undefined tag is)]))
          is)
-        (map->FileDescriptorProto-protojure-type)))
+        (map->FileDescriptorProto-type)))
 
 (defn ecis->FileDescriptorProto
   "Embedded CodedInputStream to FileDescriptorProto"
@@ -2522,7 +2522,7 @@
       (cond-> (contains? init :extension) (update :extension #(map new-FieldDescriptorProto %)))
       (cond-> (contains? init :options) (update :options new-FileOptions))
       (cond-> (contains? init :source-code-info) (update :source-code-info new-SourceCodeInfo))
-      (map->FileDescriptorProto-protojure-type)))
+      (map->FileDescriptorProto-type)))
 
 (defn pb->FileDescriptorProto
   "Protobuf to FileDescriptorProto"
@@ -2532,7 +2532,7 @@
 ;-----------------------------------------------------------------------------
 ; DescriptorProto-ReservedRange
 ;-----------------------------------------------------------------------------
-(defrecord DescriptorProto-ReservedRange-protojure-type [start end]
+(defrecord DescriptorProto-ReservedRange-type [start end]
   pb/Writer
 
   (serialize [this os]
@@ -2555,7 +2555,7 @@
 
                [index (serdes.core/cis->undefined tag is)]))
          is)
-        (map->DescriptorProto-ReservedRange-protojure-type)))
+        (map->DescriptorProto-ReservedRange-type)))
 
 (defn ecis->DescriptorProto-ReservedRange
   "Embedded CodedInputStream to DescriptorProto-ReservedRange"
@@ -2569,7 +2569,7 @@
   [init]
   {:pre [(if (s/valid? ::DescriptorProto-ReservedRange-spec init) true (throw (ex-info "Invalid input" (s/explain-data ::DescriptorProto-ReservedRange-spec init))))]}
   (-> (merge DescriptorProto-ReservedRange-defaults init)
-      (map->DescriptorProto-ReservedRange-protojure-type)))
+      (map->DescriptorProto-ReservedRange-type)))
 
 (defn pb->DescriptorProto-ReservedRange
   "Protobuf to DescriptorProto-ReservedRange"
@@ -2579,7 +2579,7 @@
 ;-----------------------------------------------------------------------------
 ; Int64Value
 ;-----------------------------------------------------------------------------
-(defrecord Int64Value-protojure-type [value]
+(defrecord Int64Value-type [value]
   pb/Writer
 
   (serialize [this os]
@@ -2599,7 +2599,7 @@
 
                [index (serdes.core/cis->undefined tag is)]))
          is)
-        (map->Int64Value-protojure-type)))
+        (map->Int64Value-type)))
 
 (defn ecis->Int64Value
   "Embedded CodedInputStream to Int64Value"
@@ -2613,7 +2613,7 @@
   [init]
   {:pre [(if (s/valid? ::Int64Value-spec init) true (throw (ex-info "Invalid input" (s/explain-data ::Int64Value-spec init))))]}
   (-> (merge Int64Value-defaults init)
-      (map->Int64Value-protojure-type)))
+      (map->Int64Value-type)))
 
 (defn pb->Int64Value
   "Protobuf to Int64Value"
@@ -2623,7 +2623,7 @@
 ;-----------------------------------------------------------------------------
 ; EnumValueOptions
 ;-----------------------------------------------------------------------------
-(defrecord EnumValueOptions-protojure-type [deprecated uninterpreted-option]
+(defrecord EnumValueOptions-type [deprecated uninterpreted-option]
   pb/Writer
 
   (serialize [this os]
@@ -2646,7 +2646,7 @@
 
                [index (serdes.core/cis->undefined tag is)]))
          is)
-        (map->EnumValueOptions-protojure-type)))
+        (map->EnumValueOptions-type)))
 
 (defn ecis->EnumValueOptions
   "Embedded CodedInputStream to EnumValueOptions"
@@ -2661,7 +2661,7 @@
   {:pre [(if (s/valid? ::EnumValueOptions-spec init) true (throw (ex-info "Invalid input" (s/explain-data ::EnumValueOptions-spec init))))]}
   (-> (merge EnumValueOptions-defaults init)
       (cond-> (contains? init :uninterpreted-option) (update :uninterpreted-option #(map new-UninterpretedOption %)))
-      (map->EnumValueOptions-protojure-type)))
+      (map->EnumValueOptions-type)))
 
 (defn pb->EnumValueOptions
   "Protobuf to EnumValueOptions"
@@ -2671,7 +2671,7 @@
 ;-----------------------------------------------------------------------------
 ; UInt32Value
 ;-----------------------------------------------------------------------------
-(defrecord UInt32Value-protojure-type [value]
+(defrecord UInt32Value-type [value]
   pb/Writer
 
   (serialize [this os]
@@ -2691,7 +2691,7 @@
 
                [index (serdes.core/cis->undefined tag is)]))
          is)
-        (map->UInt32Value-protojure-type)))
+        (map->UInt32Value-type)))
 
 (defn ecis->UInt32Value
   "Embedded CodedInputStream to UInt32Value"
@@ -2705,7 +2705,7 @@
   [init]
   {:pre [(if (s/valid? ::UInt32Value-spec init) true (throw (ex-info "Invalid input" (s/explain-data ::UInt32Value-spec init))))]}
   (-> (merge UInt32Value-defaults init)
-      (map->UInt32Value-protojure-type)))
+      (map->UInt32Value-type)))
 
 (defn pb->UInt32Value
   "Protobuf to UInt32Value"
@@ -2715,7 +2715,7 @@
 ;-----------------------------------------------------------------------------
 ; Enum
 ;-----------------------------------------------------------------------------
-(defrecord Enum-protojure-type [name enumvalue options source-context syntax]
+(defrecord Enum-type [name enumvalue options source-context syntax]
   pb/Writer
 
   (serialize [this os]
@@ -2747,7 +2747,7 @@
 
                [index (serdes.core/cis->undefined tag is)]))
          is)
-        (map->Enum-protojure-type)))
+        (map->Enum-type)))
 
 (defn ecis->Enum
   "Embedded CodedInputStream to Enum"
@@ -2764,7 +2764,7 @@
       (cond-> (contains? init :enumvalue) (update :enumvalue #(map new-EnumValue %)))
       (cond-> (contains? init :options) (update :options #(map new-Option %)))
       (cond-> (contains? init :source-context) (update :source-context new-SourceContext))
-      (map->Enum-protojure-type)))
+      (map->Enum-type)))
 
 (defn pb->Enum
   "Protobuf to Enum"
@@ -2774,7 +2774,7 @@
 ;-----------------------------------------------------------------------------
 ; Timestamp
 ;-----------------------------------------------------------------------------
-(defrecord Timestamp-protojure-type [seconds nanos]
+(defrecord Timestamp-type [seconds nanos]
   pb/Writer
 
   (serialize [this os]
@@ -2797,7 +2797,7 @@
 
                [index (serdes.core/cis->undefined tag is)]))
          is)
-        (map->Timestamp-protojure-type)))
+        (map->Timestamp-type)))
 
 (defn ecis->Timestamp
   "Embedded CodedInputStream to Timestamp"
@@ -2811,7 +2811,7 @@
   [init]
   {:pre [(if (s/valid? ::Timestamp-spec init) true (throw (ex-info "Invalid input" (s/explain-data ::Timestamp-spec init))))]}
   (-> (merge Timestamp-defaults init)
-      (map->Timestamp-protojure-type)))
+      (map->Timestamp-type)))
 
 (defn pb->Timestamp
   "Protobuf to Timestamp"
@@ -2821,7 +2821,7 @@
 ;-----------------------------------------------------------------------------
 ; FieldDescriptorProto
 ;-----------------------------------------------------------------------------
-(defrecord FieldDescriptorProto-protojure-type [label json-name name oneof-index number type-name type options extendee default-value]
+(defrecord FieldDescriptorProto-type [label json-name name oneof-index number type-name type options extendee default-value]
   pb/Writer
 
   (serialize [this os]
@@ -2868,7 +2868,7 @@
 
                [index (serdes.core/cis->undefined tag is)]))
          is)
-        (map->FieldDescriptorProto-protojure-type)))
+        (map->FieldDescriptorProto-type)))
 
 (defn ecis->FieldDescriptorProto
   "Embedded CodedInputStream to FieldDescriptorProto"
@@ -2883,7 +2883,7 @@
   {:pre [(if (s/valid? ::FieldDescriptorProto-spec init) true (throw (ex-info "Invalid input" (s/explain-data ::FieldDescriptorProto-spec init))))]}
   (-> (merge FieldDescriptorProto-defaults init)
       (cond-> (contains? init :options) (update :options new-FieldOptions))
-      (map->FieldDescriptorProto-protojure-type)))
+      (map->FieldDescriptorProto-type)))
 
 (defn pb->FieldDescriptorProto
   "Protobuf to FieldDescriptorProto"
@@ -2893,7 +2893,7 @@
 ;-----------------------------------------------------------------------------
 ; GeneratedCodeInfo
 ;-----------------------------------------------------------------------------
-(defrecord GeneratedCodeInfo-protojure-type [annotation]
+(defrecord GeneratedCodeInfo-type [annotation]
   pb/Writer
 
   (serialize [this os]
@@ -2912,7 +2912,7 @@
 
                [index (serdes.core/cis->undefined tag is)]))
          is)
-        (map->GeneratedCodeInfo-protojure-type)))
+        (map->GeneratedCodeInfo-type)))
 
 (defn ecis->GeneratedCodeInfo
   "Embedded CodedInputStream to GeneratedCodeInfo"
@@ -2927,7 +2927,7 @@
   {:pre [(if (s/valid? ::GeneratedCodeInfo-spec init) true (throw (ex-info "Invalid input" (s/explain-data ::GeneratedCodeInfo-spec init))))]}
   (-> (merge GeneratedCodeInfo-defaults init)
       (cond-> (contains? init :annotation) (update :annotation #(map new-GeneratedCodeInfo-Annotation %)))
-      (map->GeneratedCodeInfo-protojure-type)))
+      (map->GeneratedCodeInfo-type)))
 
 (defn pb->GeneratedCodeInfo
   "Protobuf to GeneratedCodeInfo"
@@ -2937,7 +2937,7 @@
 ;-----------------------------------------------------------------------------
 ; Field
 ;-----------------------------------------------------------------------------
-(defrecord Field-protojure-type [type-url json-name packed name oneof-index number kind cardinality options default-value]
+(defrecord Field-type [type-url json-name packed name oneof-index number kind cardinality options default-value]
   pb/Writer
 
   (serialize [this os]
@@ -2984,7 +2984,7 @@
 
                [index (serdes.core/cis->undefined tag is)]))
          is)
-        (map->Field-protojure-type)))
+        (map->Field-type)))
 
 (defn ecis->Field
   "Embedded CodedInputStream to Field"
@@ -2999,7 +2999,7 @@
   {:pre [(if (s/valid? ::Field-spec init) true (throw (ex-info "Invalid input" (s/explain-data ::Field-spec init))))]}
   (-> (merge Field-defaults init)
       (cond-> (contains? init :options) (update :options #(map new-Option %)))
-      (map->Field-protojure-type)))
+      (map->Field-type)))
 
 (defn pb->Field
   "Protobuf to Field"
@@ -3009,7 +3009,7 @@
 ;-----------------------------------------------------------------------------
 ; FileOptions
 ;-----------------------------------------------------------------------------
-(defrecord FileOptions-protojure-type [php-class-prefix java-generic-services java-outer-classname java-multiple-files php-generic-services php-namespace go-package optimize-for java-string-check-utf8 ruby-package java-package csharp-namespace uninterpreted-option php-metadata-namespace deprecated swift-prefix java-generate-equals-and-hash cc-enable-arenas py-generic-services cc-generic-services objc-class-prefix]
+(defrecord FileOptions-type [php-class-prefix java-generic-services java-outer-classname java-multiple-files php-generic-services php-namespace go-package optimize-for java-string-check-utf8 ruby-package java-package csharp-namespace uninterpreted-option php-metadata-namespace deprecated swift-prefix java-generate-equals-and-hash cc-enable-arenas py-generic-services cc-generic-services objc-class-prefix]
   pb/Writer
 
   (serialize [this os]
@@ -3089,7 +3089,7 @@
 
                [index (serdes.core/cis->undefined tag is)]))
          is)
-        (map->FileOptions-protojure-type)))
+        (map->FileOptions-type)))
 
 (defn ecis->FileOptions
   "Embedded CodedInputStream to FileOptions"
@@ -3104,7 +3104,7 @@
   {:pre [(if (s/valid? ::FileOptions-spec init) true (throw (ex-info "Invalid input" (s/explain-data ::FileOptions-spec init))))]}
   (-> (merge FileOptions-defaults init)
       (cond-> (contains? init :uninterpreted-option) (update :uninterpreted-option #(map new-UninterpretedOption %)))
-      (map->FileOptions-protojure-type)))
+      (map->FileOptions-type)))
 
 (defn pb->FileOptions
   "Protobuf to FileOptions"
@@ -3114,7 +3114,7 @@
 ;-----------------------------------------------------------------------------
 ; SourceCodeInfo
 ;-----------------------------------------------------------------------------
-(defrecord SourceCodeInfo-protojure-type [location]
+(defrecord SourceCodeInfo-type [location]
   pb/Writer
 
   (serialize [this os]
@@ -3133,7 +3133,7 @@
 
                [index (serdes.core/cis->undefined tag is)]))
          is)
-        (map->SourceCodeInfo-protojure-type)))
+        (map->SourceCodeInfo-type)))
 
 (defn ecis->SourceCodeInfo
   "Embedded CodedInputStream to SourceCodeInfo"
@@ -3148,7 +3148,7 @@
   {:pre [(if (s/valid? ::SourceCodeInfo-spec init) true (throw (ex-info "Invalid input" (s/explain-data ::SourceCodeInfo-spec init))))]}
   (-> (merge SourceCodeInfo-defaults init)
       (cond-> (contains? init :location) (update :location #(map new-SourceCodeInfo-Location %)))
-      (map->SourceCodeInfo-protojure-type)))
+      (map->SourceCodeInfo-type)))
 
 (defn pb->SourceCodeInfo
   "Protobuf to SourceCodeInfo"
@@ -3158,7 +3158,7 @@
 ;-----------------------------------------------------------------------------
 ; ServiceOptions
 ;-----------------------------------------------------------------------------
-(defrecord ServiceOptions-protojure-type [deprecated uninterpreted-option]
+(defrecord ServiceOptions-type [deprecated uninterpreted-option]
   pb/Writer
 
   (serialize [this os]
@@ -3181,7 +3181,7 @@
 
                [index (serdes.core/cis->undefined tag is)]))
          is)
-        (map->ServiceOptions-protojure-type)))
+        (map->ServiceOptions-type)))
 
 (defn ecis->ServiceOptions
   "Embedded CodedInputStream to ServiceOptions"
@@ -3196,7 +3196,7 @@
   {:pre [(if (s/valid? ::ServiceOptions-spec init) true (throw (ex-info "Invalid input" (s/explain-data ::ServiceOptions-spec init))))]}
   (-> (merge ServiceOptions-defaults init)
       (cond-> (contains? init :uninterpreted-option) (update :uninterpreted-option #(map new-UninterpretedOption %)))
-      (map->ServiceOptions-protojure-type)))
+      (map->ServiceOptions-type)))
 
 (defn pb->ServiceOptions
   "Protobuf to ServiceOptions"
@@ -3206,7 +3206,7 @@
 ;-----------------------------------------------------------------------------
 ; Int32Value
 ;-----------------------------------------------------------------------------
-(defrecord Int32Value-protojure-type [value]
+(defrecord Int32Value-type [value]
   pb/Writer
 
   (serialize [this os]
@@ -3226,7 +3226,7 @@
 
                [index (serdes.core/cis->undefined tag is)]))
          is)
-        (map->Int32Value-protojure-type)))
+        (map->Int32Value-type)))
 
 (defn ecis->Int32Value
   "Embedded CodedInputStream to Int32Value"
@@ -3240,7 +3240,7 @@
   [init]
   {:pre [(if (s/valid? ::Int32Value-spec init) true (throw (ex-info "Invalid input" (s/explain-data ::Int32Value-spec init))))]}
   (-> (merge Int32Value-defaults init)
-      (map->Int32Value-protojure-type)))
+      (map->Int32Value-type)))
 
 (defn pb->Int32Value
   "Protobuf to Int32Value"
@@ -3250,7 +3250,7 @@
 ;-----------------------------------------------------------------------------
 ; StringValue
 ;-----------------------------------------------------------------------------
-(defrecord StringValue-protojure-type [value]
+(defrecord StringValue-type [value]
   pb/Writer
 
   (serialize [this os]
@@ -3270,7 +3270,7 @@
 
                [index (serdes.core/cis->undefined tag is)]))
          is)
-        (map->StringValue-protojure-type)))
+        (map->StringValue-type)))
 
 (defn ecis->StringValue
   "Embedded CodedInputStream to StringValue"
@@ -3284,7 +3284,7 @@
   [init]
   {:pre [(if (s/valid? ::StringValue-spec init) true (throw (ex-info "Invalid input" (s/explain-data ::StringValue-spec init))))]}
   (-> (merge StringValue-defaults init)
-      (map->StringValue-protojure-type)))
+      (map->StringValue-type)))
 
 (defn pb->StringValue
   "Protobuf to StringValue"

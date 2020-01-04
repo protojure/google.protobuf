@@ -42,7 +42,7 @@
 ;-----------------------------------------------------------------------------
 ; Version
 ;-----------------------------------------------------------------------------
-(defrecord Version-protojure-type [major minor patch suffix]
+(defrecord Version-type [major minor patch suffix]
   pb/Writer
 
   (serialize [this os]
@@ -71,7 +71,7 @@
 
                [index (serdes.core/cis->undefined tag is)]))
          is)
-        (map->Version-protojure-type)))
+        (map->Version-type)))
 
 (defn ecis->Version
   "Embedded CodedInputStream to Version"
@@ -85,7 +85,7 @@
   [init]
   {:pre [(if (s/valid? ::Version-spec init) true (throw (ex-info "Invalid input" (s/explain-data ::Version-spec init))))]}
   (-> (merge Version-defaults init)
-      (map->Version-protojure-type)))
+      (map->Version-type)))
 
 (defn pb->Version
   "Protobuf to Version"
@@ -95,7 +95,7 @@
 ;-----------------------------------------------------------------------------
 ; CodeGeneratorRequest
 ;-----------------------------------------------------------------------------
-(defrecord CodeGeneratorRequest-protojure-type [file-to-generate parameter proto-file compiler-version]
+(defrecord CodeGeneratorRequest-type [file-to-generate parameter proto-file compiler-version]
   pb/Writer
 
   (serialize [this os]
@@ -124,7 +124,7 @@
 
                [index (serdes.core/cis->undefined tag is)]))
          is)
-        (map->CodeGeneratorRequest-protojure-type)))
+        (map->CodeGeneratorRequest-type)))
 
 (defn ecis->CodeGeneratorRequest
   "Embedded CodedInputStream to CodeGeneratorRequest"
@@ -140,7 +140,7 @@
   (-> (merge CodeGeneratorRequest-defaults init)
       (cond-> (contains? init :proto-file) (update :proto-file #(map com.google.protobuf/new-FileDescriptorProto %)))
       (cond-> (contains? init :compiler-version) (update :compiler-version new-Version))
-      (map->CodeGeneratorRequest-protojure-type)))
+      (map->CodeGeneratorRequest-type)))
 
 (defn pb->CodeGeneratorRequest
   "Protobuf to CodeGeneratorRequest"
@@ -150,7 +150,7 @@
 ;-----------------------------------------------------------------------------
 ; CodeGeneratorResponse
 ;-----------------------------------------------------------------------------
-(defrecord CodeGeneratorResponse-protojure-type [error file]
+(defrecord CodeGeneratorResponse-type [error file]
   pb/Writer
 
   (serialize [this os]
@@ -173,7 +173,7 @@
 
                [index (serdes.core/cis->undefined tag is)]))
          is)
-        (map->CodeGeneratorResponse-protojure-type)))
+        (map->CodeGeneratorResponse-type)))
 
 (defn ecis->CodeGeneratorResponse
   "Embedded CodedInputStream to CodeGeneratorResponse"
@@ -188,7 +188,7 @@
   {:pre [(if (s/valid? ::CodeGeneratorResponse-spec init) true (throw (ex-info "Invalid input" (s/explain-data ::CodeGeneratorResponse-spec init))))]}
   (-> (merge CodeGeneratorResponse-defaults init)
       (cond-> (contains? init :file) (update :file #(map new-CodeGeneratorResponse-File %)))
-      (map->CodeGeneratorResponse-protojure-type)))
+      (map->CodeGeneratorResponse-type)))
 
 (defn pb->CodeGeneratorResponse
   "Protobuf to CodeGeneratorResponse"
@@ -198,7 +198,7 @@
 ;-----------------------------------------------------------------------------
 ; CodeGeneratorResponse-File
 ;-----------------------------------------------------------------------------
-(defrecord CodeGeneratorResponse-File-protojure-type [name insertion-point content]
+(defrecord CodeGeneratorResponse-File-type [name insertion-point content]
   pb/Writer
 
   (serialize [this os]
@@ -224,7 +224,7 @@
 
                [index (serdes.core/cis->undefined tag is)]))
          is)
-        (map->CodeGeneratorResponse-File-protojure-type)))
+        (map->CodeGeneratorResponse-File-type)))
 
 (defn ecis->CodeGeneratorResponse-File
   "Embedded CodedInputStream to CodeGeneratorResponse-File"
@@ -238,7 +238,7 @@
   [init]
   {:pre [(if (s/valid? ::CodeGeneratorResponse-File-spec init) true (throw (ex-info "Invalid input" (s/explain-data ::CodeGeneratorResponse-File-spec init))))]}
   (-> (merge CodeGeneratorResponse-File-defaults init)
-      (map->CodeGeneratorResponse-File-protojure-type)))
+      (map->CodeGeneratorResponse-File-type)))
 
 (defn pb->CodeGeneratorResponse-File
   "Protobuf to CodeGeneratorResponse-File"
