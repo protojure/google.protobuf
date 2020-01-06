@@ -5,7 +5,7 @@
             :url "https://www.apache.org/licenses/LICENSE-2.0"
             :year 2020
             :key "apache-2.0"}
-  :dependencies [[org.clojure/clojure "1.10.1"]
-                 [protojure "1.1.0"]
-                 [com.google.protobuf/protobuf-java "3.11.1"]]
+  :dependencies [[org.clojure/clojure "1.10.1" :scope "provided"]
+                 [protojure "1.1.0" :scope "provided"]
+                 [com.google.protobuf/protobuf-java "3.11.1" :scope "provided"]]
   :repl-options {:init-ns google.protobuf})
