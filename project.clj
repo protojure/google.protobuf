@@ -1,4 +1,4 @@
-(defproject protojure/google.protobuf "0.9.2-SNAPSHOT"
+(defproject protojure/google.protobuf "1.0.0"
   :description "Protojure support for https://developers.google.com/protocol-buffers/docs/reference/google.protobuf"
   :url "https://github.com/protojure/google.protobuf"
   :license {:name "Apache License 2.0"
