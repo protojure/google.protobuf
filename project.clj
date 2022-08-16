@@ -5,6 +5,6 @@
             :url "https://www.apache.org/licenses/LICENSE-2.0"
             :year 2022
             :key "apache-2.0"}
-  :dependencies [[org.clojure/clojure "1.10.3"]
-                 [io.github.protojure/core "2.0.1"]]
+  :dependencies [[org.clojure/clojure "1.11.1"]
+                 [io.github.protojure/core "2.3.1"]]
   :repl-options {:init-ns google.protobuf})
