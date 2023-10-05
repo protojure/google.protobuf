@@ -1,5 +1,5 @@
 // Protocol Buffers - Google's data interchange format
-// Copyright 2008 Google Inc.  All rights reserved.
+// Copyright 2007 Google Inc.  All rights reserved.
 // https://developers.google.com/protocol-buffers/
 //
 // Redistribution and use in source and binary forms, with or without
@@ -28,21 +28,49 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-syntax = "proto3";
+// Author: kenton@google.com (Kenton Varda)
+//
+// This is proto2's version of MessageSet.  See go/messageset to learn what
+// MessageSets are and how they are used.
+//
+// In proto2, we implement MessageSet in terms of extensions, except with a
+// special wire format for backwards-compatibility.  To define a message that
+// goes in a MessageSet in proto2, you must declare within that message's
+// scope an extension of MessageSet named "message_set_extension" and with
+// the field number matching the type ID.  So, for example, this proto1 code:
+//   message Foo {
+//     enum TypeId { MESSAGE_TYPE_ID = 1234; }
+//   }
+// becomes this proto2 code:
+//   message Foo {
+//     extend google.protobuf.bridge.MessageSet {
+//       optional Foo message_set_extension = 1234;
+//     }
+//   }
+//
+// Now you can use the usual proto2 extensions accessors to access this
+// message.  For example, the proto1 code:
+//   MessageSet mset;
+//   Foo* foo = mset.get_mutable<Foo>();
+// becomes this proto2 code:
+//   google::protobuf::bridge::MessageSet mset;
+//   Foo* foo = mset.MutableExtension(Foo::message_set_extension);
+//
+// Of course, new code that doesn't have backwards-compatibility requirements
+// should just use extensions themselves and not worry about MessageSet.
 
-package google.protobuf;
+syntax = "proto2";
 
-option java_package = "com.google.protobuf";
-option java_outer_classname = "SourceContextProto";
+package google.protobuf.bridge;
+
+option java_outer_classname = "MessageSetProtos";
 option java_multiple_files = true;
+option cc_enable_arenas = true;
 option objc_class_prefix = "GPB";
-option csharp_namespace = "Google.Protobuf.WellKnownTypes";
-option go_package = "google.golang.org/protobuf/types/known/sourcecontextpb";
 
-// `SourceContext` represents information about the source of a
-// protobuf element, like the file in which it is defined.
-message SourceContext {
-  // The path-qualified name of the .proto file that contained the associated
-  // protobuf element.  For example: `"google/protobuf/source_context.proto"`.
-  string file_name = 1;
+// This is proto2's version of MessageSet.
+message MessageSet {
+  option message_set_wire_format = true;
+
+  extensions 4 to max;
 }
