@@ -32,6 +32,38 @@
 (declare ecis->CodeGeneratorResponse-File)
 (declare new-CodeGeneratorResponse-File)
 
+;;----------------------------------------------------------------------------------
+;;----------------------------------------------------------------------------------
+;; Enumerations
+;;----------------------------------------------------------------------------------
+;;----------------------------------------------------------------------------------
+
+;-----------------------------------------------------------------------------
+; CodeGeneratorResponse-Feature
+;-----------------------------------------------------------------------------
+(def CodeGeneratorResponse-Feature-default :feature-none)
+
+(def CodeGeneratorResponse-Feature-val2label {
+  0 :feature-none
+  1 :feature-proto3-optional
+  2 :feature-supports-editions})
+
+(def CodeGeneratorResponse-Feature-label2val (set/map-invert CodeGeneratorResponse-Feature-val2label))
+
+(defn cis->CodeGeneratorResponse-Feature [is]
+  (let [val (serdes.core/cis->Enum is)]
+    (get CodeGeneratorResponse-Feature-val2label val val)))
+
+(defn- get-CodeGeneratorResponse-Feature [value]
+  {:pre [(or (int? value) (contains? CodeGeneratorResponse-Feature-label2val value))]}
+  (get CodeGeneratorResponse-Feature-label2val value value))
+
+(defn write-CodeGeneratorResponse-Feature
+  ([tag value os] (write-CodeGeneratorResponse-Feature tag {:optimize false} value os))
+  ([tag options value os]
+   (serdes.core/write-Enum tag options (get-CodeGeneratorResponse-Feature value) os)))
+
+
 
 ;;----------------------------------------------------------------------------------
 ;;----------------------------------------------------------------------------------
@@ -42,14 +74,16 @@
 ;-----------------------------------------------------------------------------
 ; Version
 ;-----------------------------------------------------------------------------
-(defrecord Version-type [major minor patch suffix]
+(defrecord Version-record [major minor patch suffix]
   pb/Writer
-
   (serialize [this os]
     (serdes.core/write-Int32 1  {:optimize true} (:major this) os)
     (serdes.core/write-Int32 2  {:optimize true} (:minor this) os)
     (serdes.core/write-Int32 3  {:optimize true} (:patch this) os)
-    (serdes.core/write-String 4  {:optimize true} (:suffix this) os)))
+    (serdes.core/write-String 4  {:optimize true} (:suffix this) os))
+  pb/TypeReflection
+  (gettype [this]
+    "com.google.protobuf.compiler.Version"))
 
 (s/def :com.google.protobuf.compiler.Version/major int?)
 (s/def :com.google.protobuf.compiler.Version/minor int?)
@@ -71,7 +105,7 @@
 
                [index (serdes.core/cis->undefined tag is)]))
          is)
-        (map->Version-type)))
+        (map->Version-record)))
 
 (defn ecis->Version
   "Embedded CodedInputStream to Version"
@@ -85,31 +119,37 @@
   [init]
   {:pre [(if (s/valid? ::Version-spec init) true (throw (ex-info "Invalid input" (s/explain-data ::Version-spec init))))]}
   (-> (merge Version-defaults init)
-      (map->Version-type)))
+      (map->Version-record)))
 
 (defn pb->Version
   "Protobuf to Version"
   [input]
   (cis->Version (serdes.stream/new-cis input)))
 
+(def ^:protojure.protobuf.any/record Version-meta {:type "com.google.protobuf.compiler.Version" :decoder pb->Version})
+
 ;-----------------------------------------------------------------------------
 ; CodeGeneratorRequest
 ;-----------------------------------------------------------------------------
-(defrecord CodeGeneratorRequest-type [file-to-generate parameter proto-file compiler-version]
+(defrecord CodeGeneratorRequest-record [file-to-generate parameter proto-file source-file-descriptors compiler-version]
   pb/Writer
-
   (serialize [this os]
     (serdes.complex/write-repeated serdes.core/write-String 1 (:file-to-generate this) os)
     (serdes.core/write-String 2  {:optimize true} (:parameter this) os)
     (serdes.complex/write-repeated serdes.core/write-embedded 15 (:proto-file this) os)
-    (serdes.core/write-embedded 3 (:compiler-version this) os)))
+    (serdes.complex/write-repeated serdes.core/write-embedded 17 (:source-file-descriptors this) os)
+    (serdes.core/write-embedded 3 (:compiler-version this) os))
+  pb/TypeReflection
+  (gettype [this]
+    "com.google.protobuf.compiler.CodeGeneratorRequest"))
 
 (s/def :com.google.protobuf.compiler.CodeGeneratorRequest/file-to-generate (s/every string?))
 (s/def :com.google.protobuf.compiler.CodeGeneratorRequest/parameter string?)
 
 
+
 (s/def ::CodeGeneratorRequest-spec (s/keys :opt-un [:com.google.protobuf.compiler.CodeGeneratorRequest/file-to-generate :com.google.protobuf.compiler.CodeGeneratorRequest/parameter ]))
-(def CodeGeneratorRequest-defaults {:file-to-generate [] :parameter "" :proto-file [] })
+(def CodeGeneratorRequest-defaults {:file-to-generate [] :parameter "" :proto-file [] :source-file-descriptors [] })
 
 (defn cis->CodeGeneratorRequest
   "CodedInputStream to CodeGeneratorRequest"
@@ -120,11 +160,12 @@
                1 [:file-to-generate (serdes.complex/cis->repeated serdes.core/cis->String is)]
                2 [:parameter (serdes.core/cis->String is)]
                15 [:proto-file (serdes.complex/cis->repeated com.google.protobuf/ecis->FileDescriptorProto is)]
+               17 [:source-file-descriptors (serdes.complex/cis->repeated com.google.protobuf/ecis->FileDescriptorProto is)]
                3 [:compiler-version (ecis->Version is)]
 
                [index (serdes.core/cis->undefined tag is)]))
          is)
-        (map->CodeGeneratorRequest-type)))
+        (map->CodeGeneratorRequest-record)))
 
 (defn ecis->CodeGeneratorRequest
   "Embedded CodedInputStream to CodeGeneratorRequest"
@@ -138,29 +179,36 @@
   [init]
   {:pre [(if (s/valid? ::CodeGeneratorRequest-spec init) true (throw (ex-info "Invalid input" (s/explain-data ::CodeGeneratorRequest-spec init))))]}
   (-> (merge CodeGeneratorRequest-defaults init)
-      (cond-> (contains? init :proto-file) (update :proto-file #(map com.google.protobuf/new-FileDescriptorProto %)))
-      (cond-> (contains? init :compiler-version) (update :compiler-version new-Version))
-      (map->CodeGeneratorRequest-type)))
+      (cond-> (some? (get init :proto-file)) (update :proto-file #(map com.google.protobuf/new-FileDescriptorProto %)))
+      (cond-> (some? (get init :source-file-descriptors)) (update :source-file-descriptors #(map com.google.protobuf/new-FileDescriptorProto %)))
+      (cond-> (some? (get init :compiler-version)) (update :compiler-version new-Version))
+      (map->CodeGeneratorRequest-record)))
 
 (defn pb->CodeGeneratorRequest
   "Protobuf to CodeGeneratorRequest"
   [input]
   (cis->CodeGeneratorRequest (serdes.stream/new-cis input)))
 
+(def ^:protojure.protobuf.any/record CodeGeneratorRequest-meta {:type "com.google.protobuf.compiler.CodeGeneratorRequest" :decoder pb->CodeGeneratorRequest})
+
 ;-----------------------------------------------------------------------------
 ; CodeGeneratorResponse
 ;-----------------------------------------------------------------------------
-(defrecord CodeGeneratorResponse-type [error file]
+(defrecord CodeGeneratorResponse-record [error supported-features file]
   pb/Writer
-
   (serialize [this os]
     (serdes.core/write-String 1  {:optimize true} (:error this) os)
-    (serdes.complex/write-repeated serdes.core/write-embedded 15 (:file this) os)))
+    (serdes.core/write-UInt64 2  {:optimize true} (:supported-features this) os)
+    (serdes.complex/write-repeated serdes.core/write-embedded 15 (:file this) os))
+  pb/TypeReflection
+  (gettype [this]
+    "com.google.protobuf.compiler.CodeGeneratorResponse"))
 
 (s/def :com.google.protobuf.compiler.CodeGeneratorResponse/error string?)
+(s/def :com.google.protobuf.compiler.CodeGeneratorResponse/supported-features int?)
 
-(s/def ::CodeGeneratorResponse-spec (s/keys :opt-un [:com.google.protobuf.compiler.CodeGeneratorResponse/error ]))
-(def CodeGeneratorResponse-defaults {:error "" :file [] })
+(s/def ::CodeGeneratorResponse-spec (s/keys :opt-un [:com.google.protobuf.compiler.CodeGeneratorResponse/error :com.google.protobuf.compiler.CodeGeneratorResponse/supported-features ]))
+(def CodeGeneratorResponse-defaults {:error "" :supported-features 0 :file [] })
 
 (defn cis->CodeGeneratorResponse
   "CodedInputStream to CodeGeneratorResponse"
@@ -169,11 +217,12 @@
          (fn [tag index]
              (case index
                1 [:error (serdes.core/cis->String is)]
+               2 [:supported-features (serdes.core/cis->UInt64 is)]
                15 [:file (serdes.complex/cis->repeated ecis->CodeGeneratorResponse-File is)]
 
                [index (serdes.core/cis->undefined tag is)]))
          is)
-        (map->CodeGeneratorResponse-type)))
+        (map->CodeGeneratorResponse-record)))
 
 (defn ecis->CodeGeneratorResponse
   "Embedded CodedInputStream to CodeGeneratorResponse"
@@ -187,28 +236,34 @@
   [init]
   {:pre [(if (s/valid? ::CodeGeneratorResponse-spec init) true (throw (ex-info "Invalid input" (s/explain-data ::CodeGeneratorResponse-spec init))))]}
   (-> (merge CodeGeneratorResponse-defaults init)
-      (cond-> (contains? init :file) (update :file #(map new-CodeGeneratorResponse-File %)))
-      (map->CodeGeneratorResponse-type)))
+      (cond-> (some? (get init :file)) (update :file #(map new-CodeGeneratorResponse-File %)))
+      (map->CodeGeneratorResponse-record)))
 
 (defn pb->CodeGeneratorResponse
   "Protobuf to CodeGeneratorResponse"
   [input]
   (cis->CodeGeneratorResponse (serdes.stream/new-cis input)))
 
+(def ^:protojure.protobuf.any/record CodeGeneratorResponse-meta {:type "com.google.protobuf.compiler.CodeGeneratorResponse" :decoder pb->CodeGeneratorResponse})
+
 ;-----------------------------------------------------------------------------
 ; CodeGeneratorResponse-File
 ;-----------------------------------------------------------------------------
-(defrecord CodeGeneratorResponse-File-type [name insertion-point content]
+(defrecord CodeGeneratorResponse-File-record [name insertion-point content generated-code-info]
   pb/Writer
-
   (serialize [this os]
     (serdes.core/write-String 1  {:optimize true} (:name this) os)
     (serdes.core/write-String 2  {:optimize true} (:insertion-point this) os)
-    (serdes.core/write-String 15  {:optimize true} (:content this) os)))
+    (serdes.core/write-String 15  {:optimize true} (:content this) os)
+    (serdes.core/write-embedded 16 (:generated-code-info this) os))
+  pb/TypeReflection
+  (gettype [this]
+    "com.google.protobuf.compiler.CodeGeneratorResponse-File"))
 
 (s/def :com.google.protobuf.compiler.CodeGeneratorResponse-File/name string?)
 (s/def :com.google.protobuf.compiler.CodeGeneratorResponse-File/insertion-point string?)
 (s/def :com.google.protobuf.compiler.CodeGeneratorResponse-File/content string?)
+
 (s/def ::CodeGeneratorResponse-File-spec (s/keys :opt-un [:com.google.protobuf.compiler.CodeGeneratorResponse-File/name :com.google.protobuf.compiler.CodeGeneratorResponse-File/insertion-point :com.google.protobuf.compiler.CodeGeneratorResponse-File/content ]))
 (def CodeGeneratorResponse-File-defaults {:name "" :insertion-point "" :content "" })
 
@@ -221,10 +276,11 @@
                1 [:name (serdes.core/cis->String is)]
                2 [:insertion-point (serdes.core/cis->String is)]
                15 [:content (serdes.core/cis->String is)]
+               16 [:generated-code-info (com.google.protobuf/ecis->GeneratedCodeInfo is)]
 
                [index (serdes.core/cis->undefined tag is)]))
          is)
-        (map->CodeGeneratorResponse-File-type)))
+        (map->CodeGeneratorResponse-File-record)))
 
 (defn ecis->CodeGeneratorResponse-File
   "Embedded CodedInputStream to CodeGeneratorResponse-File"
@@ -238,10 +294,13 @@
   [init]
   {:pre [(if (s/valid? ::CodeGeneratorResponse-File-spec init) true (throw (ex-info "Invalid input" (s/explain-data ::CodeGeneratorResponse-File-spec init))))]}
   (-> (merge CodeGeneratorResponse-File-defaults init)
-      (map->CodeGeneratorResponse-File-type)))
+      (cond-> (some? (get init :generated-code-info)) (update :generated-code-info com.google.protobuf/new-GeneratedCodeInfo))
+      (map->CodeGeneratorResponse-File-record)))
 
 (defn pb->CodeGeneratorResponse-File
   "Protobuf to CodeGeneratorResponse-File"
   [input]
   (cis->CodeGeneratorResponse-File (serdes.stream/new-cis input)))
+
+(def ^:protojure.protobuf.any/record CodeGeneratorResponse-File-meta {:type "com.google.protobuf.compiler.CodeGeneratorResponse-File" :decoder pb->CodeGeneratorResponse-File})
 
